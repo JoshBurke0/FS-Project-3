@@ -10,50 +10,7 @@ const taskModel = require('./schema/taskSchema')
 app.use(cors());
 app.use(express.json());
 
-
-app.get('/api/getTasks', async (req, res) => {
-  try{
-    const allTasks = await taskModel.find({})
-    res.json(allTasks)
-  } catch (err){
-    res.status(500).send(err)
-  }
-
-  
-})
-
-app.post('/api/newTask', async (req, res) => {
-  try{
-    const task = new taskModel({
-      title: req.body.body.title,
-      desc: req.body.body.desc,
-      date: req.body.body.date,
-      priority: req.body.body.priority
-    });
-
-    await task.save()
-
-    const allTasks = await taskModel.find({})
-
-    res.json(allTasks)
-
-  } catch (err){
-    res.status(500).send(err)
-  }
-});
-
-app.delete('/api/deleteTask/:id', async (req, res) => {
-  try{
-    const id = req.params.id //this grabs the id from the url, as it is '/:id'
-    await taskModel.findByIdAndDelete(id);
-
-    const allTasks = await taskModel.find({})
-    res.json(allTasks)
-  } catch (err){
-    res.status(500).send(err)
-  }
-})
-
+//personalized stuff goes below here vvv
 
 // Database Connection
 const PORT = process.env.PORT || 5000;

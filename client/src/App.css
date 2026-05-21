@@ -1,0 +1,38 @@
+.pixel{
+  width: 10%;
+  height: 5vh;
+  border-radius: 0px;
+  border: 1px solid black;
+}
+
+.pixel:hover{
+  background-color: darkgrey;
+}
+
+.pixel:active{
+  background-color: darkgrey;
+}
+
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 95vh;
+  gap: 30px;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: rgb(218, 218, 218)
+}
+
+#canvasFrame{
+  width: 80vh;
+  background-color: red;
+  height: 95vh;
+  justify-content: center;
+  align-items: center;
+  place-items: center;
+}
+
+.pixelRow{
+  background-color: aqua;
+  width: 100%;
+}

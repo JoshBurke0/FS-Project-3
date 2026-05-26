@@ -1,8 +1,9 @@
 .pixel{
-  width: 10%;
-  height: 5vh;
+  height: 100%;
   border-radius: 0px;
-  border: 1px solid black;
+  border: 1px solid rgb(0, 0, 0);
+  /* border: none; */
+  background-color: white;
 }
 
 .pixel:hover{
@@ -14,25 +15,101 @@
 }
 
 #wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 95vh;
+  display: inline-flex;
+  flex-direction: row;
+  height: 98vh;
+  width: 175vh;
   gap: 30px;
   padding: 20px;
   box-sizing: border-box;
-  background-color: rgb(218, 218, 218)
+  background-color: rgb(110, 84, 84);
+  justify-content: space-evenly;
 }
 
 #canvasFrame{
-  width: 80vh;
+  width: 60vh;
   background-color: red;
-  height: 95vh;
+  height: 60vh;
   justify-content: center;
   align-items: center;
   place-items: center;
+  padding: 20px;
+}
+
+#drawingFrame{
+  width: 110vh;
+  background-color: aqua;
+  place-items: center;
+  display: grid;
+  grid-template-rows: 85% 15%;
+  padding: 20px;
 }
 
 .pixelRow{
   background-color: aqua;
   width: 100%;
+}
+
+#toolbar{
+  width: 100%;
+  background-color: rgb(142, 62, 39);
+  height: 100%;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 25% 25% 25% 25%;
+}
+
+#canvasSection{
+  background-color: yellow;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  place-content: center ;
+}
+
+#saveFrame{
+  background-color: blue;
+  width: 50vh;
+  height: 100%
+}
+
+#drawingSection{
+  width: 100%;
+  background-color: purple;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  align-items: center;
+  place-items: center;
+  padding: 20px;
+}
+#titleFrame{
+  background-color: brown;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  grid-template-columns: 15% 45% 20% 20%;
+  align-items: center;
+}
+
+#titleInput{
+  height: 40%;
+  width: 95%;
+  border-radius: 12px;
+  padding-left: 20px;
+  font-size: 18pt;
+}
+
+.titleButton{
+  height: 50%;
+  width: 95%;
+  border-radius: 12px;
+  font-size: 18pt;
+  font-weight: bold;
+}
+
+.color{
+  margin: 10px;
+  border-radius: 30px;
 }

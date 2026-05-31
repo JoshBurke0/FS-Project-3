@@ -27,13 +27,13 @@
 }
 
 #canvasFrame{
-  width: 60vh;
+  width: 70vh;
   background-color: red;
-  height: 60vh;
+  height: 70vh;
   justify-content: center;
   align-items: center;
   place-items: center;
-  padding: 20px;
+  /* padding: 10px; */
 }
 
 #drawingFrame{
@@ -68,12 +68,6 @@
   place-content: center ;
 }
 
-#saveFrame{
-  background-color: blue;
-  width: 50vh;
-  height: 100%
-}
-
 #drawingSection{
   width: 100%;
   background-color: purple;
@@ -95,7 +89,7 @@
 
 #titleInput{
   height: 40%;
-  width: 95%;
+  width: 90%;
   border-radius: 12px;
   padding-left: 20px;
   font-size: 18pt;
@@ -112,4 +106,18 @@
 .color{
   margin: 10px;
   border-radius: 30px;
+  transition: transform 0.3s ease;
+}
+
+.color:active{
+  transform: scale(1.005)
+}
+
+#saveFrame{
+  background-color: blue;
+  display: grid;
+  grid-template-rows: 10% 90%;
+  width: 50vh;
+  height: 100%;
+  overflow: auto;
 }

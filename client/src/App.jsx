@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export default function App(){
 
-  const canvasWidth = 16
+  const canvasWidth = 12
   const canvasSize = canvasWidth ** 2
 
   const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -12,10 +12,9 @@ export default function App(){
   const [color, setColor] = useState('black')
   const [title, setTitle] = useState('')
   const [drawings, setDrawings] = useState([]) 
-  // const [currentDrawing, SetCurrentDrawing] = useState('')
   const [isEditing, setIsEditing] = useState(false)
   const [idToEdit, setIdToEdit] = useState('')
-  const [brushType, SetBrushType] = useState('fill')
+  const [tool, setTool] = useState('Brush')
 
   useEffect(() =>{
     axios.get('http://localhost:5000/api/getDrawings')
@@ -102,12 +101,11 @@ export default function App(){
   }
 
   function paint(pixelIndex, clickedColor, rowIndex){
-    if(brushType === 'brush'){
+    if(tool === 'Brush'){
       brush(pixelIndex)
     }
     else{
-      // fill(pixelIndex, clickedColor, rowIndex)
-      floodFill(pixelIndex, clickedColor, rowIndex)
+      fill(pixelIndex, clickedColor, rowIndex)
     }
   }
 
@@ -116,7 +114,7 @@ export default function App(){
     const pixelsToFill = [...pixels]
     let pixelsToCheck = [clickedPixelIndex]
 
-    for(let i = 0; i < 1000; i++){
+    for(let i = 0; i < 1100; i++){
       const item = pixelsToCheck.shift()
       console.log("item:", item)
       if (pixelsToFill[item] === clickedColor){
@@ -125,53 +123,32 @@ export default function App(){
         pixelsToCheck.push(item - 1)
         pixelsToCheck.push(item + canvasWidth)
         pixelsToCheck.push(item - canvasWidth)
-
       }
     }
     setPixels(pixelsToFill)
   }
-
-  // function fill(clickedPixelIndex, clickedColor, clickedRow){
-  //   console.log('attempting fill')
-  //   const pixelsToFill = [...pixels]
-  //   let prevPixelsToFill = [...pixels]
-  //   console.log(pixelsToFill)
-
-    
-  //   //rows below:
-
-  //   for(let a=clickedRow; a<16; a++){
-
-  //     console.log("beginning new loop")
-  //     console.log(`clicked row: ${clickedRow}`)
-
-  //   const startOfRow = a * canvasWidth
-  //   const endOfRow = canvasWidth * (a + 1)
-
-  //     for (let i=clickedPixelIndex+(a-clickedRow)*canvasWidth; i < endOfRow; i++){
-  //       console.log("a:",a)
-  //       console.log("clickedPixelIndex:", clickedPixelIndex)
-  //       console.log("i:", clickedPixelIndex +(a-clickedRow)*canvasWidth)
-  //       if(pixels[i] === clickedColor){
-  //         pixelsToFill[i] = color
-  //         console.log('attempting brush')
-  //       }
-  //       else{
-  //         break;
-  //       }
-  //     }
-      
-      //Fill pixels to the left
-  //   xx
 
   return(
     <>
       <div id='wrapper'>
         <div id='drawingFrame'>
           <div id='drawingSection'>
-            <div id='toolbar'>
+            <div id='toolbarContainer'>
+              <div id='toolHolder'>
+                <Tool
+                toolTitle='Fill'
+                setTool={setTool}
+                tool={tool}/>
+                <Tool
+                toolTitle='Brush'
+                setTool={setTool}
+                tool={tool}/>
+              </div>
+              <div id='toolbar'>
               <ColorPallet
-              selectColor={selectColor}/>
+              selectColor={selectColor}
+              color={color}/>
+              </div>
             </div>
             <div id='canvasSection'>
               <div id='canvasFrame'>
@@ -182,7 +159,7 @@ export default function App(){
                 paint={paint}
                 color={color}
                 fill={fill}
-                brushType={brushType}/>
+                brushType={tool}/>
               </div>
             </div>
           </div>
@@ -192,10 +169,9 @@ export default function App(){
             setTitle={setTitle}
             title={title}/>
             <Button
-            // title='Save'
             title={isEditing === false ? 'Save' : 'Update' }
             func={handleSubmit}
-            color='Blue'/>
+            color={isEditing === false ? 'lightgrey' : 'orange'}/>
             <Button
             title='Clear'
             func={handleClear}
@@ -242,18 +218,24 @@ export default function App(){
     )
   }
 
-  function ColorPallet({ selectColor }){
+  function ColorPallet({ selectColor, color }){
     const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white']
     
     return(
-      colors.map((color) => 
-      <button 
-        style={{backgroundColor: color}} 
-        className='color'
-        key={color}
-        onClick={()=>selectColor(color)}>
-      </button>
-    )
+      colors.map((buttonColor) => 
+      <div className='colorContainer'>
+        <button 
+          style={
+            {
+              backgroundColor: buttonColor,
+              borderWidth: color === buttonColor ? '3px' : '2px'
+            }} 
+          className='color'
+          key={color}
+          onClick={()=>selectColor(buttonColor)}>
+        </button>
+      </div>
+      )
     )
   }
 
@@ -282,19 +264,39 @@ export default function App(){
     return(
       <>
         {drawings.map((drawing, index) => (
-          <div key={`${drawing.title}-${index}`}>
+          <div 
+          key={`${drawing.title}-${index}`}
+          className='savedDiv'>
             <h3>{drawing.title}</h3>
-            <button
-            onClick={() => (loadDrawing(drawing.pixels))}
-            >Load</button>
-            <button
-            onClick={() => (loadDrawingForEdit(drawing))}
-            >Edit</button>
-            <button
-            onClick={() => (deleteDrawing(drawing._id))}
-            >Delete</button>
+            <div className='savedButtonsDiv'> 
+              <button
+              onClick={() => (loadDrawing(drawing.pixels))}
+              className='savedButtons'
+              >Load</button>
+              <button
+              onClick={() => (loadDrawingForEdit(drawing))}
+              className='savedButtons'
+              >Edit</button>
+              <button
+              onClick={() => (deleteDrawing(drawing._id))}
+              className='savedButtons'
+              >Delete</button>
+              </div>  
           </div>
         ))}
       </>
+    )
+  }
+
+  function Tool({ toolTitle, setTool, tool }){
+    return(
+    <button
+    id={toolTitle}
+    onClick={() => (setTool(toolTitle))}
+    className='toolButton'
+    style={{ borderWidth: tool === toolTitle ? '3px' : '2px'}} 
+    >
+      {toolTitle}
+    </button>
     )
   }
